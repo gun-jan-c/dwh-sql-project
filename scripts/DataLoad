@@ -1,77 +1,139 @@
 
---LOAD bronze.crm_cust_info
-TRUNCATE TABLE bronze.crm_cust_info --FULL LOAD
-;
 
-BULK INSERT bronze.crm_cust_info 
-FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
-WITH (
-	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
-	, FIELDTERMINATOR = ',' --How is the data separated?
-	, TABLOCK --Lock table while data is loaded
-);
+	CREATE OR ALTER PROCEDURE bronze.load_bronze AS
+	BEGIN
 
+	DECLARE @BATCH_START_TIME DATETIME, @BATCH_END_TIME DATETIME;
+	SET @BATCH_START_TIME = GETDATE()
 
---LOAD bronze.crm_cust_info
-TRUNCATE TABLE bronze.crm_prd_info --FULL LOAD
-;
+		DECLARE @START_TIME DATETIME, @END_TIME DATETIME
+		BEGIN TRY
 
-BULK INSERT bronze.crm_prd_info
-FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
-WITH (
-	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
-	, FIELDTERMINATOR = ',' --How is the data separated?
-	, TABLOCK --Lock table while data is loaded
-);
+			PRINT '==============';
+			PRINT 'Loading Bronze Layer';
+			PRINT '==============';
 
-
---LOAD bronze.crm_sales_details
-TRUNCATE TABLE bronze.crm_sales_details --FULL LOAD
-;
-
-BULK INSERT bronze.crm_sales_details
-FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
-WITH (
-	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
-	, FIELDTERMINATOR = ',' --How is the data separated?
-	, TABLOCK --Lock table while data is loaded
-);
+			PRINT '----LOADING CRM Tables----';
+			--LOAD bronze.crm_cust_info
+			SET @START_TIME = GETDATE();
+			PRINT '>TRUNCATING bronze.crm_cust_info';
+			TRUNCATE TABLE bronze.crm_cust_info --FULL LOAD
+			;
+			PRINT '>UPDATING bronze.crm_cust_info';
+			BULK INSERT bronze.crm_cust_info 
+			FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+			WITH (
+				FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+				, FIELDTERMINATOR = ',' --How is the data separated?
+				, TABLOCK --Lock table while data is loaded
+			);
+			SET @END_TIME = GETDATE();
+			PRINT '>> LOAD DURATION: '  + CAST(DATEDIFF(second, @START_TIME, @END_TIME) AS NVARCHAR) + ' seconds';
+			PRINT '------------'
 
 
---LOAD bronze.crm_sales_details
-TRUNCATE TABLE bronze.erp_cust_master --FULL LOAD
-;
-
-BULK INSERT bronze.erp_cust_master
-FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
-WITH (
-	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
-	, FIELDTERMINATOR = ',' --How is the data separated?
-	, TABLOCK --Lock table while data is loaded
-);
-
-
---LOAD bronze.erp_cust_location
-TRUNCATE TABLE bronze.erp_cust_location --FULL LOAD
-;
-
-BULK INSERT bronze.erp_cust_location
-FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
-WITH (
-	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
-	, FIELDTERMINATOR = ',' --How is the data separated?
-	, TABLOCK --Lock table while data is loaded
-);
+			--LOAD bronze.crm_prd_info
+			SET @START_TIME = GETDATE();
+			PRINT '>TRUNCATING bronze.crm_prd_info'
+			TRUNCATE TABLE bronze.crm_prd_info --FULL LOAD
+			;
+			PRINT '>UPDATING bronze.crm_prd_info';
+			BULK INSERT bronze.crm_prd_info
+			FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+			WITH (
+				FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+				, FIELDTERMINATOR = ',' --How is the data separated?
+				, TABLOCK --Lock table while data is loaded
+			);
+			SET @END_TIME = GETDATE();
+			PRINT '>> LOAD DURATION: '  + CAST(DATEDIFF(second, @START_TIME, @END_TIME) AS NVARCHAR) + ' seconds';
+			PRINT '------------'
 
 
---LOAD bronze.erp_px_cat_g1v2
-TRUNCATE TABLE bronze.erp_px_cat_g1v2 --FULL LOAD
-;
+			--LOAD bronze.crm_sales_details
+			SET @START_TIME = GETDATE();
+			PRINT '>TRUNCATING bronze.crm_sales_details'
+			TRUNCATE TABLE bronze.crm_sales_details --FULL LOAD
+			;
+			PRINT '>UPDATING bronze.crm_sales_details';
+			BULK INSERT bronze.crm_sales_details
+			FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+			WITH (
+				FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+				, FIELDTERMINATOR = ',' --How is the data separated?
+				, TABLOCK --Lock table while data is loaded
+			);
+			SET @END_TIME = GETDATE();
+			PRINT '>> LOAD DURATION: '  + CAST(DATEDIFF(second, @START_TIME, @END_TIME) AS NVARCHAR) + ' seconds';
+			PRINT '------------'
 
-BULK INSERT bronze.erp_px_cat_g1v2
-FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
-WITH (
-	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
-	, FIELDTERMINATOR = ',' --How is the data separated?
-	, TABLOCK --Lock table while data is loaded
-);
+			PRINT '----LOADING ERP Tables----';
+
+			--LOAD bronze.erp_cust_master
+			SET @START_TIME = GETDATE();
+			PRINT '>TRUNCATING bronze.erp_cust_master'
+			TRUNCATE TABLE bronze.erp_cust_master --FULL LOAD
+			;
+			PRINT '>UPDATING bronze.erp_cust_master';
+			BULK INSERT bronze.erp_cust_master
+			FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
+			WITH (
+				FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+				, FIELDTERMINATOR = ',' --How is the data separated?
+				, TABLOCK --Lock table while data is loaded
+			);
+			SET @END_TIME = GETDATE();
+			PRINT '>> LOAD DURATION: '  + CAST(DATEDIFF(second, @START_TIME, @END_TIME) AS NVARCHAR) + ' seconds';
+			PRINT '------------'
+
+			--LOAD bronze.erp_cust_location
+			SET @START_TIME = GETDATE();
+			PRINT '>TRUNCATING bronze.erp_cust_location'
+			TRUNCATE TABLE bronze.erp_cust_location --FULL LOAD
+			;
+			PRINT '>UPDATING bronze.erp_cust_location';
+			BULK INSERT bronze.erp_cust_location
+			FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+			WITH (
+				FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+				, FIELDTERMINATOR = ',' --How is the data separated?
+				, TABLOCK --Lock table while data is loaded
+			);
+			SET @END_TIME = GETDATE();
+			PRINT '>> LOAD DURATION: '  + CAST(DATEDIFF(second, @START_TIME, @END_TIME) AS NVARCHAR) + ' seconds';
+			PRINT '------------'
+
+
+			--LOAD bronze.erp_px_cat_g1v2
+			SET @START_TIME = GETDATE();
+			PRINT '>TRUNCATING bronze.erp_px_cat_g1v2'
+			TRUNCATE TABLE bronze.erp_px_cat_g1v2 --FULL LOAD
+			;
+			PRINT '>UPDATING bronze.erp_px_cat_g1v2';
+			BULK INSERT bronze.erp_px_cat_g1v2
+			FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+			WITH (
+				FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+				, FIELDTERMINATOR = ',' --How is the data separated?
+				, TABLOCK --Lock table while data is loaded
+			);
+			SET @END_TIME = GETDATE();
+			PRINT '>> LOAD DURATION: '  + CAST(DATEDIFF(second, @START_TIME, @END_TIME) AS NVARCHAR) + ' seconds';
+			PRINT '------------'
+
+		END TRY
+		BEGIN CATCH
+		--WHAT TO DO IF THERE IS AN ERROR?
+			PRINT '!!!!';
+			PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER';
+			PRINT 'ERROR MESSAGE' + ERROR_MESSAGE();
+			PRINT 'ERROR MESSAGE' + CAST(ERROR_NUMBER() AS NVARCHAR);
+			PRINT '!!!!';
+		END CATCH
+
+	SET @BATCH_END_TIME = GETDATE();
+	PRINT 'BATCH RUN DURATION: ' + CAST(DATEDIFF(second, @BATCH_START_TIME, @BATCH_END_TIME) AS NVARCHAR) + ' seconds';
+	END;
+
+
+
