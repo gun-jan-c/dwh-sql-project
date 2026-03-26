@@ -1,0 +1,77 @@
+
+--LOAD bronze.crm_cust_info
+TRUNCATE TABLE bronze.crm_cust_info --FULL LOAD
+;
+
+BULK INSERT bronze.crm_cust_info 
+FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+WITH (
+	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+	, FIELDTERMINATOR = ',' --How is the data separated?
+	, TABLOCK --Lock table while data is loaded
+);
+
+
+--LOAD bronze.crm_cust_info
+TRUNCATE TABLE bronze.crm_prd_info --FULL LOAD
+;
+
+BULK INSERT bronze.crm_prd_info
+FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+WITH (
+	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+	, FIELDTERMINATOR = ',' --How is the data separated?
+	, TABLOCK --Lock table while data is loaded
+);
+
+
+--LOAD bronze.crm_sales_details
+TRUNCATE TABLE bronze.crm_sales_details --FULL LOAD
+;
+
+BULK INSERT bronze.crm_sales_details
+FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+WITH (
+	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+	, FIELDTERMINATOR = ',' --How is the data separated?
+	, TABLOCK --Lock table while data is loaded
+);
+
+
+--LOAD bronze.crm_sales_details
+TRUNCATE TABLE bronze.erp_cust_master --FULL LOAD
+;
+
+BULK INSERT bronze.erp_cust_master
+FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
+WITH (
+	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+	, FIELDTERMINATOR = ',' --How is the data separated?
+	, TABLOCK --Lock table while data is loaded
+);
+
+
+--LOAD bronze.erp_cust_location
+TRUNCATE TABLE bronze.erp_cust_location --FULL LOAD
+;
+
+BULK INSERT bronze.erp_cust_location
+FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+WITH (
+	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+	, FIELDTERMINATOR = ',' --How is the data separated?
+	, TABLOCK --Lock table while data is loaded
+);
+
+
+--LOAD bronze.erp_px_cat_g1v2
+TRUNCATE TABLE bronze.erp_px_cat_g1v2 --FULL LOAD
+;
+
+BULK INSERT bronze.erp_px_cat_g1v2
+FROM 'C:\Users\gunja\OneDrive\Desktop\DWH\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+WITH (
+	FIRSTROW=2 --As the first row contains column headers, so we use this to skip first row and load data from row #2
+	, FIELDTERMINATOR = ',' --How is the data separated?
+	, TABLOCK --Lock table while data is loaded
+);
