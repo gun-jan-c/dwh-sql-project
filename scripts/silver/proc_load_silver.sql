@@ -86,7 +86,7 @@ BEGIN
 															ELSE 'N/A'
 														END AS prd_line
 													,CAST(prd_start_dt as date) as prd_start_dt
-													,CAST(dateadd( day, -1, LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt)) AS DATE) AS prd_end_dt
+													,CAST(dateadd(day, -1, LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt)) AS DATE) AS prd_end_dt
 												from bronze.crm_prd_info
 												;
 			PRINT '>>silver.crm_prd_info LOAD COMPLETE';
@@ -106,8 +106,8 @@ BEGIN
 													,sls_ship_dt
 													,sls_due_dt
 													,sls_sales
-													,sls_quantity
 													,sls_price
+													,sls_quantity
 													)
 												SELECT 	sls_ord_num
 													,sls_prd_key
@@ -125,8 +125,8 @@ BEGIN
 															THEN sls_quantity*ABS(sls_price)
 															ELSE sls_sales
 														END AS sls_sales
-													, CASE WHEN sls_price is null or sls_price<=0 
-															THEN sls_sales / NULLIF(sls_quantity,0)
+													, CASE WHEN sls_price is null or sls_price<=0 THEN sls_sales / NULLIF(sls_quantity,0)
+														ELSE sls_price
 														END AS sls_price
 													,sls_quantity
 													FROM bronze.crm_sales_details
