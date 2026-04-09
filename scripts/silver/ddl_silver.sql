@@ -1,4 +1,4 @@
---SILVER DDL--
+--SILVER LAYER DDL SCRIPTS--
 use dwhmar26;
 
 -- DDL scripts for creating all silver layer tables.
